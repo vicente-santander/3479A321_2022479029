@@ -50,31 +50,27 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  // Método que contiene los botones flotantes
-  Widget _buildFloatingButtons() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          FloatingActionButton(
+  // Método que contiene los botones persistentes
+  List<Widget> _buildPersistentFooterButtons() {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center, // Centra los botones
+        children: [
+          IconButton(
             onPressed: _decrementCounter,
-            tooltip: 'Disminuir',
-            child: const Icon(Icons.thumb_down),
+            icon: const Icon(Icons.remove),
           ),
-          FloatingActionButton(
+          IconButton(
             onPressed: _resetCounter,
-            tooltip: 'Reiniciar',
-            child: const Icon(Icons.autorenew),
+            icon: const Icon(Icons.refresh),
           ),
-          FloatingActionButton(
+          IconButton(
             onPressed: _incrementCounter,
-            tooltip: 'Incrementar',
-            child: const Icon(Icons.thumb_up),
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
-    );
+    ];
   }
 
   @override
@@ -98,8 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: _buildFloatingButtons(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      persistentFooterButtons:
+          _buildPersistentFooterButtons(), // Uso del método refactorizado
     );
   }
 }
