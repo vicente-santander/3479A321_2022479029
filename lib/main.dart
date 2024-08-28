@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'lab1 Vicente Santander',
+      title: 'Lab1 Vicente Santander',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           IconButton(
             onPressed: _decrementCounter,
-            icon: const Icon(Icons.remove),
+            icon: const Icon(Icons.arrow_downward),
           ),
           IconButton(
             onPressed: _resetCounter,
@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           IconButton(
             onPressed: _incrementCounter,
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.arrow_upward),
           ),
         ],
       ),
