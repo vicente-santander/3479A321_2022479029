@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,12 +11,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Lab1 Vicente Santander',
+      title: 'Lab Vicente Santander',
       theme: ThemeData(
+        fontFamily: 'CHOWFUN_',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'laboratorio 1 Vicente Santander'),
+      home: const MyHomePage(title: 'Laboratorio 2 Vicente Santander'),
     );
   }
 }
@@ -84,6 +86,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SvgPicture.asset(
+              'assets/icons/8674409_ic_fluent_bot_regular_icon.svg',
+              semanticsLabel: 'robot Logo',
+              width: 100,
+            ),
             const Text(
               'Has presionado el botón esta cantidad de veces:',
             ),
@@ -94,8 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      persistentFooterButtons:
-          _buildPersistentFooterButtons(), // Uso del método refactorizado
+      persistentFooterButtons: _buildPersistentFooterButtons(),
     );
   }
 }
