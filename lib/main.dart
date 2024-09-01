@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logger/logger.dart';
+import 'package:flutter_application_1/pages/my_home_page.dart'; // Importa el archivo movido
+
+final logger = Logger();
 
 void main() {
+  logger.d("Logger is working!");
   runApp(const MyApp());
 }
 
@@ -10,6 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logger.i("Building MyApp");
     return MaterialApp(
       title: 'Lab Vicente Santander',
       theme: ThemeData(
@@ -18,90 +23,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Laboratorio 2 Vicente Santander'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  void _decrementCounter() {
-    setState(() {
-      if (_counter > 0) _counter--;
-    });
-  }
-
-  void _resetCounter() {
-    setState(() {
-      _counter = 0;
-    });
-  }
-
-  // Método que contiene los botones persistentes
-  List<Widget> _buildPersistentFooterButtons() {
-    return [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center, // Centra los botones
-        children: [
-          IconButton(
-            onPressed: _decrementCounter,
-            icon: const Icon(Icons.arrow_downward),
-          ),
-          IconButton(
-            onPressed: _resetCounter,
-            icon: const Icon(Icons.refresh),
-          ),
-          IconButton(
-            onPressed: _incrementCounter,
-            icon: const Icon(Icons.arrow_upward),
-          ),
-        ],
-      ),
-    ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SvgPicture.asset(
-              'assets/icons/8674409_ic_fluent_bot_regular_icon.svg',
-              semanticsLabel: 'robot Logo',
-              width: 100,
-            ),
-            const Text(
-              'Has presionado el botón esta cantidad de veces:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      persistentFooterButtons: _buildPersistentFooterButtons(),
     );
   }
 }
