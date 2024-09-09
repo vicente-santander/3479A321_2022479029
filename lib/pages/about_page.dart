@@ -37,7 +37,7 @@ class AboutPage extends StatelessWidget {
             left: 16,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pop(context); // Navigate back to previous page
+                Navigator.popUntil(context, ModalRoute.withName('/'));
               },
               child: const Text('Go Back to Home'),
             ),
