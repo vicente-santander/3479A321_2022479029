@@ -14,10 +14,9 @@ class AboutPage extends StatelessWidget {
         children: [
           Center(
             child: Column(
-              mainAxisAlignment:
-                  MainAxisAlignment.start, // Mover el contenido hacia arriba
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 60), // Espacio superior ajustado
+                const SizedBox(height: 60),
                 SvgPicture.asset(
                   'assets/icons/8666609_user_icon.svg',
                   semanticsLabel: 'user Logo',
@@ -39,7 +38,7 @@ class AboutPage extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Go Back to Home'),
+              child: const Text('Go Back to Detail Page'),
             ),
           ),
         ],
