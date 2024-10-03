@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Laboratorio 2 Vicente Santander'),
+      home: const MyHomePage(title: 'Home'),
     );
   }
 }
