@@ -11,40 +11,64 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() {
+    logger.i("createState called");
+    return _MyHomePageState();
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool _hasLogged = false;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-      logger.d("Counter incremented to $_counter");
-    });
+  @override
+  void initState() {
+    super.initState();
+    logger.i("initState called: Widget inserted in the tree for the first time.");
   }
 
-  void _decrementCounter() {
-    setState(() {
-      if (_counter > 0) _counter--;
-      logger.d("Counter decremented to $_counter");
-    });
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    logger.i("didChangeDependencies called: Widget dependencies changed or initialized.");
   }
 
-  void _resetCounter() {
-    setState(() {
-      _counter = 0;
-      logger.d("Counter reset to $_counter");
-    });
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+      logger.i("setState called: Triggered a rebuild due to state change.");
+    } 
   }
 
-  // Función para determinar el mensaje y el ícono a mostrar
+  @override
+  void didUpdateWidget(covariant MyHomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    logger.i("didUpdateWidget called: Widget properties updated from ${oldWidget.title} to ${widget.title}.");
+  }
+
+  @override
+  void deactivate() {
+    logger.i("deactivate called: Widget is about to be removed from the tree.");
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    logger.i("dispose called: Widget is permanently removed.");
+    super.dispose();
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    logger.i("reassemble called: Application reassembled, usually due to hot reload.");
+  }
+
   Widget _getGameStatus() {
     String message;
     Widget icon;
 
-    // Asignar mensaje e ícono dependiendo del valor del contador
     if (_counter == 10) {
       message = "¡Victoria!";
       icon = SvgPicture.asset(
@@ -71,11 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }
 
-    // Devolver tanto el mensaje como el ícono en una columna
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        icon, // Mostrar el ícono
+        icon,
         const SizedBox(height: 16),
         Text(
           message,
@@ -91,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     if (!_hasLogged) {
-      logger.i("Building MyHomePage");
+      logger.i("build called: Building/rebuilding the widget.");
       _hasLogged = true;
     }
 
@@ -104,17 +127,15 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            // Card con el estado del juego y el contador
             Card(
-              color: const Color.fromARGB(0, 0, 0, 0), // Color de la Card
-              elevation: 1, // Elevación de la Card
+              color: const Color.fromARGB(0, 0, 0, 0),
+              elevation: 1,
               margin: const EdgeInsets.all(16),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    // Mensaje del juego (Victoria, Derrota o Sigue jugando)
                     _getGameStatus(),
                     const SizedBox(height: 16),
                     Text(
@@ -124,7 +145,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // Botones para incrementar, decrementar y resetear
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -147,7 +167,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             const SizedBox(height: 16),
-            // Botón fuera de la Card
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -155,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   MaterialPageRoute(
                     builder: (context) => const DetailPage(),
                   ),
-                ); // Navegar a DetailPage
+                );
               },
               child: const Text('Go to Detail Page'),
             ),
@@ -163,5 +182,32 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  void _incrementCounter() {
+    if (mounted) {
+      setState(() {
+        _counter++;
+        logger.d("Counter incremented to $_counter");
+      });
+    }
+  }
+
+  void _decrementCounter() {
+    if (mounted) {
+      setState(() {
+        if (_counter > 0) _counter--;
+        logger.d("Counter decremented to $_counter");
+      });
+    }
+  }
+
+  void _resetCounter() {
+    if (mounted) {
+      setState(() {
+        _counter = 0;
+        logger.d("Counter reset to $_counter");
+      });
+    }
   }
 }
