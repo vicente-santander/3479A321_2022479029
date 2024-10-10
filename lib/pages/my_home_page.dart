@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/about_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
 import 'detail_page.dart'; // Importar DetailPage
@@ -11,6 +12,7 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
+  // ignore: no_logic_in_create_state
   State<MyHomePage> createState() {
     logger.i("createState called");
     return _MyHomePageState();
@@ -111,78 +113,124 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    if (!_hasLogged) {
-      logger.i("build called: Building/rebuilding the widget.");
-      _hasLogged = true;
-    }
+ @override
+Widget build(BuildContext context) {
+  if (!_hasLogged) {
+    logger.i("build called: Building/rebuilding the widget.");
+    _hasLogged = true;
+  }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Card(
-              color: const Color.fromARGB(0, 0, 0, 0),
-              elevation: 1,
-              margin: const EdgeInsets.all(16),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    _getGameStatus(),
-                    const SizedBox(height: 16),
-                    Text(
-                      '$_counter',
-                      style: const TextStyle(
-                        fontSize: 40,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          onPressed: _decrementCounter,
-                          icon: const Icon(Icons.arrow_downward),
-                        ),
-                        IconButton(
-                          onPressed: _resetCounter,
-                          icon: const Icon(Icons.refresh),
-                        ),
-                        IconButton(
-                          onPressed: _incrementCounter,
-                          icon: const Icon(Icons.arrow_upward),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+  return Scaffold(
+    appBar: AppBar(
+      backgroundColor: Colors.amber,
+      title: Text(widget.title),
+    ),
+    drawer: Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.deepPurple,
+            ),
+            child: Text(
+              'Menu',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
               ),
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const DetailPage(),
-                  ),
-                );
-              },
-              child: const Text('Go to Detail Page'),
-            ),
-          ],
-        ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.countertops),
+            title: const Text('Contador'),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.details),
+            title: const Text('Detalle'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const DetailPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.info),
+            title: const Text('Sobre'),
+            onTap: () {
+              // Navigate to Sobre screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.history),
+            title: const Text('Auditoría'),
+            onTap: () {
+             /* Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AuditoriaPage()),
+              );*/
+            },
+          ),
+        ],
       ),
-    );
-  }
+    ),
+    body: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Card(
+            color: const Color.fromARGB(0, 0, 0, 0),
+            elevation: 1,
+            margin: const EdgeInsets.all(16),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  _getGameStatus(),
+                  const SizedBox(height: 16),
+                  Text(
+                    '$_counter',
+                    style: const TextStyle(
+                      fontSize: 40,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: _decrementCounter,
+                        icon: const Icon(Icons.arrow_downward),
+                      ),
+                      IconButton(
+                        onPressed: _resetCounter,
+                        icon: const Icon(Icons.refresh),
+                      ),
+                      IconButton(
+                        onPressed: _incrementCounter,
+                        icon: const Icon(Icons.arrow_upward),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 
   void _incrementCounter() {
     if (mounted) {
