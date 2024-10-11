@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'about_page.dart'; // Importar AboutPage
+import 'about_page.dart';
+import 'package:flutter_application_1/models/app_data.dart';
+import 'package:provider/provider.dart';
 
 class DetailPage extends StatelessWidget {
   const DetailPage({super.key});
@@ -34,25 +36,33 @@ class DetailPage extends StatelessWidget {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(
-            horizontal: 32.0,
-            vertical: 16.0), // Aumentar el padding horizontal y vertical
+            horizontal: 16.0,
+            vertical: 16.0), // Ajustar el padding horizontal y vertical
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context); // Navegar de regreso a MyHomePage
-              },
-              child: const Text('Go Back to Home'),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context); // Navegar de regreso a MyHomePage
+                  context.read<AppData>().addAction(
+                      "Regresó a la página de inicio desde 'Detalle'");
+                },
+                child: const Text('Go Back to Home'),
+              ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AboutPage()),
-                ); // Navegar a About Page
-              },
-              child: const Text('Go to About Page'),
+            const SizedBox(width: 16), // Añadir espacio entre los botones
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AboutPage()),
+                  ); // Navegar a About Page
+                  context.read<AppData>().addAction("Acceso a 'Sobre'");
+                },
+                child: const Text('Go to About Page'),
+              ),
             ),
           ],
         ),

@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
-import 'package:flutter_application_1/pages/my_home_page.dart'; // Importa el archivo movido
+import 'package:flutter_application_1/models/app_data.dart';
+import 'package:flutter_application_1/pages/my_home_page.dart';
 
 final logger = Logger();
 
 void main() {
   logger.d("Logger is working!");
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => AppData(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
