@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_application_1/models/app_data.dart';
+import 'package:provider/provider.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -37,6 +39,9 @@ class AboutPage extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
+                context
+                    .read<AppData>()
+                    .addAction("Regresó a la página de inicio desde 'Sobre'");
               },
               child: const Text('Go Back to Detail Page'),
             ),
