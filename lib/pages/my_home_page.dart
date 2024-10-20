@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/auditoria.dart';
 import 'package:flutter_application_1/pages/about_page.dart';
 import 'package:flutter_application_1/models/app_data.dart';
+import 'package:flutter_application_1/pages/preferencia_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'detail_page.dart';
 import 'package:flutter_application_1/pages/auditoria_page.dart';
+import 'package:flutter_application_1/utils/database_helper.dart';
 
 final logger = Logger();
 
@@ -24,6 +28,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool _hasLogged = false;
+  String _userName = '';
+  int _counter = 0;
+
+  // Método para cargar preferencias desde SharedPreferences
+  Future<void> _loadPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userName = prefs.getString('userName') ?? '';
+      _counter = prefs.getInt('counter') ?? 0;
+      logger.i('Counter value $_counter is loaded');
+      logger.i('Username value $_userName is loaded');
+    });
+  }
 
   @override
   void initState() {
@@ -32,53 +49,11 @@ class _MyHomePageState extends State<MyHomePage> {
         .i("initState called: Widget inserted in the tree for the first time.");
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    logger.i(
-        "didChangeDependencies called: Widget dependencies changed or initialized.");
-  }
-
-  @override
-  void setState(VoidCallback fn) {
-    if (mounted) {
-      super.setState(fn);
-      logger.i("setState called: Triggered a rebuild due to state change.");
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant MyHomePage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    logger.i("didUpdateWidget called: Widget properties updated.");
-  }
-
-  @override
-  void deactivate() {
-    logger.i("deactivate called: Widget is about to be removed from the tree.");
-    super.deactivate();
-  }
-
-  @override
-  void dispose() {
-    logger.i("dispose called: Widget is permanently removed.");
-    super.dispose();
-  }
-
-  @override
-  void reassemble() {
-    super.reassemble();
-    logger.i(
-        "reassemble called: Application reassembled, usually due to hot reload.");
-  }
-
   Widget _getGameStatus() {
     String message;
     Widget icon;
 
-    final counter = context.watch<AppData>().counter;
-
-    if (counter == 10) {
+    if (_counter == 10) {
       message = "¡Victoria!";
       icon = SvgPicture.asset(
         'assets/icons/8664871_thumbs_up_icon.svg',
@@ -86,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
         height: 100,
         semanticsLabel: 'Victoria Icon',
       );
-    } else if (counter == 5) {
+    } else if (_counter == 5) {
       message = "Derrota";
       icon = SvgPicture.asset(
         'assets/icons/8666595_x_icon.svg',
@@ -116,6 +91,12 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.black,
           ),
         ),
+        const SizedBox(height: 16),
+        if (_userName.isNotEmpty)
+          Text(
+            'Hola $_userName',
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
       ],
     );
   }
@@ -188,6 +169,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Preferencias'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PreferenciaPage()),
+                ).then((_) async {
+                  await _loadPreferences();
+                  await DatabaseHelper().insertAuditoria(
+                      Auditoria(action: 'Acceso a Preferencias'));
+                });
+              },
+            ),
           ],
         ),
       ),
@@ -207,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     _getGameStatus(),
                     const SizedBox(height: 16),
                     Text(
-                      '${context.watch<AppData>().counter}',
+                      '$_counter',
                       style: const TextStyle(
                         fontSize: 40,
                       ),
@@ -217,20 +213,32 @@ class _MyHomePageState extends State<MyHomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                          onPressed: () {
-                            context.read<AppData>().decrementCounter();
+                          onPressed: () async {
+                            setState(() {
+                              _counter--;
+                            });
+                            await DatabaseHelper().insertAuditoria(
+                                Auditoria(action: 'Disminuyó el contador'));
                           },
                           icon: const Icon(Icons.arrow_downward),
                         ),
                         IconButton(
-                          onPressed: () {
-                            context.read<AppData>().resetCounter();
+                          onPressed: () async {
+                            setState(() {
+                              _counter = 0;
+                            });
+                            await DatabaseHelper().insertAuditoria(
+                                Auditoria(action: 'Reinició el contador'));
                           },
                           icon: const Icon(Icons.refresh),
                         ),
                         IconButton(
-                          onPressed: () {
-                            context.read<AppData>().incrementCounter();
+                          onPressed: () async {
+                            setState(() {
+                              _counter++;
+                            });
+                            await DatabaseHelper().insertAuditoria(
+                                Auditoria(action: 'Incrementó el contador'));
                           },
                           icon: const Icon(Icons.arrow_upward),
                         ),

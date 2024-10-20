@@ -8,6 +8,7 @@ final logger = Logger();
 
 void main() {
   logger.d("Logger is working!");
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     ChangeNotifierProvider(
       create: (context) => AppData(),
